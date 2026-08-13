@@ -59,7 +59,18 @@ else_if = {
 	limit = {
 		owner? = {
 			has_valid_civic = civic_machine_cult_machine
-			NOT = { has_origin = origin_forever_cruise }
+			has_origin = origin_sacred_path
+		}
+	}
+	add_building = {
+		zone = zone_ark_sacred_path_pilgrims
+		building = building_organic_sanctuary
+	}
+}
+else_if = {
+	limit = {
+		owner? = {
+			has_valid_civic = civic_machine_cult_machine
 		}
 	}
 	add_building = {
