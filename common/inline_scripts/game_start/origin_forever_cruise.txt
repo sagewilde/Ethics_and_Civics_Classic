@@ -62,7 +62,6 @@ if = {
 		limit = {
 			owner = {
 				is_regular_empire = yes
-				is_individual_machine = no
 				has_machine_subspecies = yes
 			}
 		}
