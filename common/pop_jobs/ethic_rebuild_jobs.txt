@@ -435,6 +435,184 @@ bio_trophy_unprocessing = {
 	}
 }
 
+cruise_passenger = {
+    category = cruise_passenger
+    can_be_automated = no
+    swappable_data = {
+        default = {
+            building_icon = building_organic_sanctuary
+        }
+        swap_type = {
+            trigger = {
+                owner? = {
+                    OR = {
+                        is_hospitality_servitor_empire = yes
+                        is_hospitality_machine_cult_machine_empire = yes
+                    }
+                }
+            }
+            name = cruise_passenger_bio_trophy
+            building_icon = building_organic_sanctuary
+        }
+    }
+    tags = {
+        unity
+        cruise_passenger
+    }
+    possible_pre_triggers = {
+        is_sapient = yes
+    }
+    possible = {
+        owner = {
+            has_origin = origin_forever_cruise
+        }
+        OR = {
+            has_living_standard = {
+                type = living_standard_cruise_passenger
+                country = owner
+            }
+            has_living_standard = {
+                type = living_standard_organic_trophy
+                country = owner
+            }
+        }
+    }
+    resources = {
+        category = planet_cruise_passengers
+        produces = {
+            unity = 2
+        }
+        upkeep = {
+            trigger = {
+                owner? = {
+                    OR = {
+                        is_hospitality_servitor_empire = no
+                        is_hospitality_machine_cult_machine_empire = no
+                    }
+                }
+            }
+            consumer_goods = 1.5
+        }
+        upkeep = {
+            trigger = {
+                owner? = {
+                    OR = {
+                        is_hospitality_servitor_empire = yes
+                        is_hospitality_machine_cult_machine_empire = yes
+                    }
+                }
+            }
+            consumer_goods = 1
+        }
+    }
+    triggered_planet_modifier = {
+        potential = {
+            owner? = {
+                is_gestalt = no
+            }
+        }
+        pop_cat_specialist_bonus_workforce_mult = 0.01
+    }
+    triggered_planet_modifier = {
+        potential = {
+            owner? = {
+                is_gestalt = yes
+            }
+        }
+        pop_cat_complex_drone_bonus_workforce_mult = 0.01
+    }
+    triggered_planet_modifier = {
+        potential = {
+            owner? = {
+                is_hospitality_servitor_empire = yes
+            }
+        }
+        pop_cat_complex_drone_bonus_workforce_mult = 0.01
+    }
+    triggered_planet_modifier = {
+        potential = {
+            owner? = {
+                is_hospitality_machine_cult_machine_empire = yes
+            }
+        }
+        pop_cat_specialist_bonus_workforce_mult = 0.01
+    }
+    weight = {
+        weight = 9999
+    }
+    inline_script = "jobs/automodding_priority_charisma"
+}
+
+cruise_passenger_unemployment = {
+    category = cruise_passenger_unemployment
+    count_as_available_for_ai = yes
+    swappable_data = {
+        default = {
+            building_icon = building_residence
+        }
+        swap_type = {
+            trigger = {
+                owner? = {
+                    OR = {
+                        is_hospitality_servitor_empire = yes
+                        is_hospitality_machine_cult_machine_empire = yes
+                    }
+                }
+            }
+            name = cruise_passenger_unemployment_bio_trophy
+            building_icon = building_organic_sanctuary
+        }
+    }
+    tags = {
+        unity
+        cruise_passenger_unemployment
+    }
+    possible_pre_triggers = {
+        has_owner = yes
+        is_enslaved = no
+        is_being_purged = no
+        is_being_assimilated = no
+        is_sapient = yes
+    }
+    possible = {
+        owner = {
+            has_origin = origin_forever_cruise
+        }
+        OR = {
+            has_citizenship_type = {
+                type = citizenship_cruise_passenger
+                country = owner
+            }
+            has_citizenship_type = {
+                type = citizenship_organic_trophy
+                country = owner
+            }
+        }
+    }
+    resources = {
+        category = planet_cruise_passengers
+        produces = {
+            trigger = {
+                owner? = {
+                    is_hospitality_servitor_empire = no
+                    is_hospitality_machine_cult_machine_empire = no
+                }
+            }
+            unity = 0.5
+        }
+        upkeep = {
+            consumer_goods = 0.33
+        }
+    }
+    weight = {
+        weight = 0
+    }
+    is_capped_by_modifier = no
+    can_set_priority = no
+    contributes_to_diplo_weight = no
+    inline_script = "jobs/automodding_priority_charisma"
+}
+
 ###################
 # Fancy Jobs
 ###################

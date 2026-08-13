@@ -33,20 +33,10 @@ building_noble_estates = {
 	}
 
 	allow = {
-		# has_upgraded_capital = yes	# Lets allow this be on any planet
-		if = {
-			limit = {
-				exists = orbital_defence
-			}
-			orbital_defence = {
-				exists = starbase
-				starbase = {
-					NOR = {
-						has_starbase_building = ring_noble_estates
-						is_starbase_building_building = ring_noble_estates
-					}
-				}
-			}
+		#has_upgraded_capital = yes
+		orbital_ring_and_arkship_equivalent_absent = {
+			RING = ring_noble_estates
+			ARKSHIP = arkship_noble_estates
 		}
 	}
 
@@ -74,8 +64,12 @@ building_noble_estates = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 2
@@ -137,7 +131,7 @@ building_precinct_house = {
 			is_regular_empire = yes
 			NOR = { 
 				has_valid_civic = civic_civil_education 
-				has_valid_civic =civic_anarchy_utopia 
+				has_valid_civic = civic_anarchy_utopia 
 				has_valid_civic = civic_anarchy_ideals
 			}
 		}
@@ -192,8 +186,12 @@ building_precinct_house = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 2
@@ -218,7 +216,7 @@ building_precinct_house = {
 		is_regular_empire = yes
 		NOR = { 
 			has_valid_civic = civic_civil_education 
-			has_valid_civic =civic_anarchy_utopia
+			has_valid_civic = civic_anarchy_utopia
 			has_valid_civic = civic_anarchy_ideals
 		}
 	}
@@ -281,8 +279,14 @@ building_hall_judgment = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			volatile_motes = @b2_rare_cost
 		}
 		upkeep = {
@@ -369,8 +373,12 @@ building_state_academy = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 2
@@ -445,8 +453,14 @@ building_center_of_guidance = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			volatile_motes = @b2_rare_cost
 		}
 		upkeep = {

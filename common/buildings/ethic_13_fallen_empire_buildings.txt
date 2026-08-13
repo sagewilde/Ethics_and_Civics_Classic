@@ -3,9 +3,10 @@
 ###########################
 
 building_fe_security_1 = {
-	base_buildtime = @b2_time
+	base_buildtime = @b3_time
 	can_build = yes
 	can_demolish = yes
+	planet_limit = 1
 
 	category = government
 
@@ -23,10 +24,8 @@ building_fe_security_1 = {
 				has_country_flag = fe_security_1_can_build
 			}
 		}
-		NOR = {
+		NOT = {
 			has_modifier = resort_colony
-			has_modifier = slave_colony
-			has_modifier = penal_colony
 		}
 	}
 
@@ -51,13 +50,13 @@ building_fe_security_1 = {
 	resources = {
 		category = planet_buildings
 		cost = {
-			alloys = @b3_minerals
-			rare_crystals = @fe_sr_cost
+			alloys = @fe_alloy_cost_1
+			rare_crystals = @fe_sr_cost_1
 		}
 		upkeep = {
-			rare_crystals = 2
 			alloys = @b2_alloy_upkeep
-			energy = 15
+			energy = @fe_energy_upkeep_1
+			rare_crystals = @fe_sr_upkeep_1
 		}
 		cost = {
 			trigger = {
@@ -77,6 +76,19 @@ building_fe_security_1 = {
 		}
 		planet_building_build_speed_mult = 0.03
 		planet_decision_enact_speed_mult = 0.03
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire = yes
+			}
+		}
+		modifier = {
+			job_fe_protector_add = @fe_jobs
+		}
 	}
 
 	inline_script = {
@@ -181,8 +193,9 @@ building_fe_security_1 = {
 }
 
 building_fe_security_2 = {
-	base_buildtime = @b2_time
+	base_buildtime = @b3_time
 	can_build = no
+	planet_limit = 1
 
 	category = government
 
@@ -228,12 +241,13 @@ building_fe_security_2 = {
 	resources = {
 		category = planet_buildings
 		cost = {
-			alloys = @b3_minerals
+			alloys = @fe_alloy_cost_2
+			rare_crystals = @fe_sr_cost_2
 		}
 		upkeep = {
-			rare_crystals = 2
-			alloys = @b2_alloy_upkeep
-			energy = 15
+			alloys = @b3_alloy_upkeep
+			energy = @fe_energy_upkeep_2
+			rare_crystals = @fe_sr_upkeep_2
 		}
 		cost = {
 			trigger = {

@@ -57,7 +57,7 @@ building_hab_capital = {
 			alloys = 5
 		}
 		upkeep = {
-			trigger = { owner = { has_active_tradition = tr_expansion_adopt } }
+			trigger = { owner? = { has_active_tradition = tr_expansion_adopt } }
 			alloys = -1
 		}
 	}
@@ -77,9 +77,9 @@ building_hab_capital = {
 		script = buildings/on_all_habitat_capital_buildings
 	}
 
-	#triggered_desc = {
-	#	text = building_hab_capital_tooltip
-	#}
+	triggered_desc = {
+		text = building_hab_capital_tooltip
+	}
 
 	triggered_planet_modifier = {
 		modifier = { planet_stability_add = 1 }
@@ -89,21 +89,10 @@ building_hab_capital = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = {
-				has_active_tradition = tr_domination_imperious_architecture
-			}
-		}
-		modifier = {
-			planet_housing_add = 100
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = { is_gestalt = yes }
 		}
 		job_coordinator_add = 200
+		job_patrol_drone_add = 100
 		planet_amenities_add = 300
 	}
 
@@ -112,10 +101,8 @@ building_hab_capital = {
 			exists = owner
 			owner = { is_machine_empire = yes }
 		}
-		job_evaluator_add = 100
+		job_coordinator_add = -100
 		job_replicator_add = 100
-		job_logistics_drone_add = 200
-		planet_amenities_add = 300
 	}
 
 	triggered_planet_modifier = {
@@ -354,8 +341,12 @@ building_hab_major_capital = {
 
 	resources = {
 		category = planet_buildings_hab_capital
-		cost = {
-			minerals = @b2_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 3
@@ -370,29 +361,22 @@ building_hab_major_capital = {
 	planet_modifier = {
 		planet_housing_add = 750
 		planet_amenities_add = 750
-		# planet_max_buildings_add = @buildings_t2	# No Longer Used in Stellaris 4.0
 		planet_max_branch_office_buildings_add = 2
 		planet_defense_armies_add = @tier_3_capital_defense_armies
 		pop_environment_tolerance = 0.10
-		# # job_politician_add = 200		# Automatically applied elsewhere
 	}
 
 	inline_script = {
 		script = buildings/on_all_capital_buildings
 	}
-	
+
 	inline_script = {
 		script = buildings/on_all_habitat_capital_buildings
 	}
 
-	#inline_script = {
-	#	script = buildings/genetic_ascension_effects
-	#	TIER = 3
-	#}
-
-	#inline_script = {
-	#	script = buildings/on_all_habitat_capital_buildings
-	#}
+	triggered_desc = {
+		text = building_hab_major_capital_tooltip
+	}
 
 	triggered_planet_modifier = {
 		modifier = { planet_stability_add = 1 }
@@ -402,15 +386,30 @@ building_hab_major_capital = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = {
-				has_active_tradition = tr_domination_imperious_architecture
-			}
+			owner = { is_gestalt = yes }
 		}
-		modifier = {
-			planet_housing_add = 100
-		}
+		job_coordinator_add = 300
+		job_patrol_drone_add = 200
+		planet_amenities_add = 300
 	}
-	
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		job_coordinator_add = -100
+		job_replicator_add = 100
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_synthetics_prefabricated_components }
+		}
+		job_roboticist_add = 100
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -434,37 +433,6 @@ building_hab_major_capital = {
 			}
 		}
 		job_deep_miner_add = 200
-	}
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-		}
-		job_coordinator_add = 300
-		planet_amenities_add = 300
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}
-		job_evaluator_add = 200
-		job_replicator_add = 100
-		job_maintenance_drone_add = 300
-		planet_amenities_add = 300
-	}
-
-	#triggered_desc = {
-	#	text = building_hab_major_capital_tooltip
-	#}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { has_active_tradition = tr_synthetics_prefabricated_components }
-		}
-		job_roboticist_add = 100
 	}
 
 	triggered_planet_modifier = {
@@ -508,6 +476,11 @@ building_hab_major_capital = {
 			job_knight_commander_add = 1	# Enriad - knight_commander is still a job for a single person
 			job_knight_add = 100
 		}
+	}
+
+	inline_script = {
+		script = jobs/enforcers_add
+		AMOUNT = 100
 	}
 
 	triggered_planet_modifier = {
@@ -682,14 +655,6 @@ building_hab_major_capital = {
 	# 		job_mogul_add = 100
 	# 	}
 	# }
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		job_enforcer_add = 100
-	}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1146,6 +1111,8 @@ building_hab_major_capital = {
 	upgrades = {
 		"building_hab_system_capital"
 	}
+
+	additional_ai_weight = 100
 }
 
 # Habitat System Complex
@@ -1158,7 +1125,7 @@ building_hab_system_capital = {
 	can_be_disabled = no
 	position_priority = 0
 	capital_tier = 4
-	
+
 	icon = building_system_capital
 
 	category = government
@@ -1190,8 +1157,12 @@ building_hab_system_capital = {
 
 	resources = {
 		category = planet_buildings_hab_capital
-		cost = {
-			minerals = @b3_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b3_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 5
@@ -1206,11 +1177,9 @@ building_hab_system_capital = {
 	planet_modifier = {
 		planet_housing_add = 1000
 		planet_amenities_add = 1000
-		# planet_max_buildings_add = @buildings_t3	# No Longer Used in Stellaris 4.0
-		planet_max_branch_office_buildings_add = 3
+		planet_max_branch_office_buildings_add = 4
 		planet_defense_armies_add = @tier_4_capital_defense_armies
 		pop_environment_tolerance = 0.20
-		# # job_politician_add = 300		# Automatically applied elsewhere
 	}
 
 	inline_script = {
@@ -1242,23 +1211,30 @@ building_hab_system_capital = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = {
-				has_active_tradition = tr_domination_imperious_architecture
-			}
+			owner = { is_gestalt = yes }
 		}
-		modifier = {
-			planet_housing_add = 100
-		}
+		job_coordinator_add = 400
+		job_patrol_drone_add = 300
+		planet_amenities_add = 300
 	}
 
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = { is_machine_empire = yes }
 		}
-		job_coordinator_add = 400
-		planet_amenities_add = 300
+		job_coordinator_add = -100
+		job_replicator_add = 100
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_synthetics_prefabricated_components }
+		}
+		job_roboticist_add = 100
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1283,29 +1259,7 @@ building_hab_system_capital = {
 		}
 		job_deep_miner_add = 400
 	}
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}
-		job_evaluator_add = 300
-		job_replicator_add = 100
-		job_maintenance_drone_add = 300
-		planet_amenities_add = 300
-	}
-
-	#triggered_desc = {
-	#	text = building_hab_system_capital_tooltip
-	#}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { has_active_tradition = tr_synthetics_prefabricated_components }	# Enriad - 4.0 fix
-		}
-		job_roboticist_add = 100
-	}
-
+	
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1344,31 +1298,31 @@ building_hab_system_capital = {
 		AMOUNT = @building_static_jobs
 	}
 
-	triggered_planet_modifier = {			# Enriad - Marked for deletion, previous 👆 inline_script can fix CTD's on Linux
-		potential = {
-			exists = owner
-			owner = {
-				is_regular_empire = yes
-				NOR = {
-					is_megacorp = yes
-					has_civic = civic_exalted_priesthood
-					has_civic = civic_aristocratic_elite
-					has_civic = civic_aristocratic_elite_corporate
-					has_civic = civic_harmonious_hierarchy
-					has_civic = civic_harmonious_hierarchy_corporate
-					has_civic = civic_merchant_guilds
-					has_civic = civic_technocracy
-				}
-			}
-			NAND = {
-				has_carrier_flag = toxic_knights_habitat
-				owner = { has_origin = origin_toxic_knights }
-			}
-		}
-		modifier = {
-			# # job_politician_add = 300 # E&CC Disabled as there shouldn't be a modifier (added under planet_modifier in stead). However leaving this section out seems to cause CTD's on Linux
-		}
-	}
+	#triggered_planet_modifier = {			# Enriad - Marked for deletion, previous 👆 inline_script can fix CTD's on Linux
+	#	potential = {
+	#		exists = owner
+	#		owner = {
+	#			is_regular_empire = yes
+	#			NOR = {
+	#				is_megacorp = yes
+	#				has_civic = civic_exalted_priesthood
+	#				has_civic = civic_aristocratic_elite
+	#				has_civic = civic_aristocratic_elite_corporate
+	#				has_civic = civic_harmonious_hierarchy
+	#				has_civic = civic_harmonious_hierarchy_corporate
+	#				has_civic = civic_merchant_guilds
+	#				has_civic = civic_technocracy
+	#			}
+	#		}
+	#		NAND = {
+	#			has_carrier_flag = toxic_knights_habitat
+	#			owner = { has_origin = origin_toxic_knights }
+	#		}
+	#	}
+	#	modifier = {
+	#		# # job_politician_add = 300 # E&CC Disabled as there shouldn't be a modifier (added under planet_modifier in stead). However leaving this section out seems to cause CTD's on Linux
+	#	}
+	#}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1584,12 +1538,9 @@ building_hab_system_capital = {
 	# 	}
 	# }
 
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		job_enforcer_add = 200
+	inline_script = {
+		script = jobs/enforcers_add
+		AMOUNT = 200
 	}
 
 	triggered_planet_modifier = {
@@ -1972,6 +1923,8 @@ building_hab_system_capital = {
 	upgrades = {
 		building_imperial_capital
 	}
+
+	additional_ai_weight = 100
 }
 
 # Imperial Capital
@@ -2042,6 +1995,11 @@ building_imperial_capital = {
 		AMOUNT = 600
 	}
 
+	inline_script = {
+		script = jobs/enforcers_add
+		AMOUNT = 500
+	}
+
 	#inline_script = {
 	#	script = buildings/genetic_ascension_effects
 	#	TIER = 5
@@ -2060,26 +2018,20 @@ building_imperial_capital = {
 	#	text = building_hab_system_capital_tooltip
 	#}
 
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = {
-				has_active_tradition = tr_domination_imperious_architecture
-			}
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b4_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
-		modifier = {
-			planet_housing_add = 100
+		upkeep = {
+			energy = @b4_upkeep
 		}
 	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { has_active_tradition = tr_synthetics_prefabricated_components }	# Enriad - 4.0 fix
-		}
-		job_roboticist_add = 100
-	}
-
+	
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -2341,16 +2293,6 @@ building_imperial_capital = {
 	#		job_enforcer_add = -100
 	#	}
 	#}
-
-	resources = {
-		category = planet_buildings
-		cost = {
-			minerals = @b4_minerals
-		}
-		upkeep = {
-			energy = @b4_upkeep
-		}
-	}
 
 	# triggered_desc = {		# Enriad - Marked for deletion, moved to inline_scripts "jobs/politician_add" and "jobs/politician_add_EaC"
 	# 	trigger = {

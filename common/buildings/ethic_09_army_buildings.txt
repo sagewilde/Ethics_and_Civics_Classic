@@ -3,10 +3,7 @@
 #############
 building_military_academy = {
 	base_buildtime = @b2_time
-	empire_limit = {
-		base = 1
-	 }
-	planet_limit = 1
+	empire_limit = 1
 	can_be_ruined = no
 	category = army
 
@@ -41,10 +38,10 @@ building_military_academy = {
 		}
 	}
 
-	country_modifier = {
-		country_commander_cap_add = 1 #No cap in 4.0 could make it OP so we might nerf it in the future - Szatan2000
-		country_naval_cap_mult = 0.05
-	}
+	#country_modifier = {
+	#	country_commander_cap_add = 1 #No cap in 4.0 could make it OP so we might nerf it in the future - Szatan2000
+	#	country_naval_cap_mult = 0.05
+	#}
 
 	# triggered_planet_modifier = {
 	# 	potential = {
@@ -117,8 +114,8 @@ building_military_academy = {
 		ship_shield_hardening_add = 0.1
 		mult = owner.value:tactical_algorithms_enclave_scaling_mult
 	}
-	
-	triggered_planet_modifier = {
+
+	triggered_country_modifier = {
 		potential = {
 			exists = owner
 			owner = {
@@ -128,7 +125,7 @@ building_military_academy = {
 		pop_soldier_bonus_workforce_mult = 0.15
 	}
 
-	triggered_planet_modifier = {
+	triggered_country_modifier = {
 		potential = {
 			exists = owner
 			owner = {
@@ -137,12 +134,12 @@ building_military_academy = {
 		}
 		pop_warrior_drone_bonus_workforce_mult = 0.15
 	}
-	
-	triggered_planet_modifier = {
+
+	triggered_country_modifier = {
 		potential = {
-			OR = {
-				has_active_building = building_order_keep
-				has_active_building = building_order_castle
+			exists = owner
+			owner = {
+				has_origin = origin_toxic_knights
 			}
 		}
 		pop_knight_bonus_workforce_mult = 0.05
@@ -227,6 +224,23 @@ building_stronghold = {
 		owner = { is_wilderness_empire = no } # see 'building_planetary_carapace'
 	}
 
+	allow = {
+		exists = owner
+		OR = {
+			has_carrier_flag = ignore_ai_building_limitations
+			owner = {
+				is_ai = no
+			}
+
+			# AI is allowed to build up to two of these unless they have a fortress zone. (This can result in three under certain upgrade sequences.)
+			has_any_fortress_zone = yes
+			AND = {
+				num_buildings = { type = building_stronghold value < 2 }
+				num_buildings = { type = building_fortress value < 2 }
+			}
+		}
+	}
+
 	#triggered_planet_modifier = {
 	#	potential = {
 	#		exists = owner
@@ -258,23 +272,27 @@ building_stronghold = {
 	# 		job_mercenary_add = 100
 	# 	}
 	# }
-
 	resources = {
 		category = planet_buildings_strongholds
-		produces = {
-			trigger = {
-				exists = owner
-				owner = {
-					has_active_tradition = tr_unyielding_resistance_is_frugal
-				}
-			}
-			unity = 3
-		}
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = volatile_motes
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_martial_brotherhood }
+		}
+		modifier = {
+			planet_housing_add = 200
 		}
 	}
 
@@ -316,18 +334,25 @@ building_fortress = {
 	building_sets = {
 		government
 		fortress
-	}
-	
+		}
+
 	potential = {
+		exists = owner
 		owner = { is_wilderness_empire = no } # see 'building_planetary_carapace_2'
 	}
+
 	allow = {
 		has_upgraded_capital = yes
 	}
-	
-	inline_script = {
-		script = jobs/soldiers_add
-		AMOUNT = @building_static_jobs_high
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_martial_brotherhood }
+		}
+		modifier = {
+			planet_housing_add = 200
+		}
 	}
 
 	# triggered_planet_modifier = {				# Enriad - Mercenaries is Soldiers in 4.0
@@ -357,17 +382,14 @@ building_fortress = {
 
 	resources = {
 		category = planet_buildings_strongholds
-		produces = {
-			trigger = {
-				exists = owner
-				owner = {
-					has_active_tradition = tr_unyielding_resistance_is_frugal
-				}
-			}
-			unity = 3
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = volatile_motes
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		cost = {
-			minerals = @b2_minerals
 			volatile_motes = @b2_rare_cost
 		}
 		upkeep = {
@@ -381,6 +403,11 @@ building_fortress = {
 	}
 	show_tech_unlock_if = {
 		is_wilderness_empire = no
+	}
+
+	inline_script = {
+		script = jobs/soldiers_add
+		AMOUNT = @building_static_jobs_high
 	}
 
 	#triggered_desc = {
@@ -455,6 +482,16 @@ building_planetary_shield_generator = {
 		planet_storm_devastation_mult = -0.5
 	}
 	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_martial_brotherhood }
+		}
+		modifier = {
+			planet_housing_add = 200
+		}
+	}
+
 	inline_script = {
 		script = cosmic_storms/StormBuildingModifiers
 	}
@@ -465,17 +502,15 @@ building_planetary_shield_generator = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b2_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = volatile_motes
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = @b2_upkeep
-		}
-		produces = {
-			trigger = {
-				owner = { has_civic = civic_inwards_perfection }
-			}
-			unity = 10
 		}
 	}
 
@@ -487,14 +522,18 @@ building_planetary_shield_generator = {
 	}
 
 	custom_storm_ai_weight = {
-		weight = 5
+		weight = 0
 		modifier = {
-			factor = 5
+			add = 5
+			has_designation = col_fortress
+		}
+		modifier = {
+			add = 5
 			AND = {
 				exists = owner
-				solar_system = {
+				solar_system? = {
 					exists = owner
-					owner = { num_cosmic_storms_encountered >=2 }
+					owner = { num_cosmic_storms_encountered >= 2 }
 				}
 			}
 		}

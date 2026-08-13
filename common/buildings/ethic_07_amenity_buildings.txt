@@ -59,6 +59,7 @@ building_luxury_residence = {
 					has_valid_civic = civic_functional_architecture
 				}
 			}
+			owner = { has_origin = origin_forever_cruise }
 			has_modifier = slave_colony
 		}
 	}
@@ -88,8 +89,12 @@ building_luxury_residence = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 2
@@ -133,6 +138,12 @@ building_paradise_dome = {
 			has_modifier = slave_colony
 			has_modifier = penal_colony
 		}
+		owner? = {
+			OR = {
+				NOT = { has_origin = origin_forever_cruise }
+				has_country_flag = forever_cruise_over
+			}
+		}
 	}
 
 	allow = {
@@ -144,6 +155,7 @@ building_paradise_dome = {
 		OR = {
 			owner = { is_regular_empire = no }
 			owner = { has_valid_civic = civic_shared_burden }
+			owner = { has_origin = origin_forever_cruise }
 			has_modifier = slave_colony
 		}
 	}
@@ -187,8 +199,14 @@ building_paradise_dome = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			rare_crystals = @b2_rare_cost
 		}
 		upkeep = {
@@ -331,6 +349,12 @@ building_communal_housing = {
 				is_void_dweller_empire = yes
 			}
 		}
+		OR = {
+			has_carrier_flag = ignore_ai_building_limitations
+			owner = { is_ai = no }
+			free_amenities < @amenity_ai_limit
+			days_passed = 0 #To avoid errors at game start
+		}
 		NOR = {
 			has_modifier = slave_colony
 			has_modifier = penal_colony
@@ -391,8 +415,12 @@ building_communal_housing = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = 2
@@ -419,6 +447,7 @@ building_communal_housing_large = {
 	}
 
 	potential = {
+		exists = owner
 		has_building = building_communal_housing
 		owner = {
 			is_regular_empire = yes
@@ -430,11 +459,8 @@ building_communal_housing_large = {
 
 		OR = {
 			NOT = { is_planet_class = pc_habitat }
-			AND = {
-				exists = owner
-				owner = {
-					is_void_dweller_empire = yes
-				}
+			owner = {
+				is_void_dweller_empire = yes
 			}
 		}
 		NOR = {
@@ -481,7 +507,7 @@ building_communal_housing_large = {
 
 	planet_modifier = {
 		planet_housing_add = 4000
-		planet_amenities_add = 6000
+		planet_amenities_add = 5000
 	}
 
 	triggered_planet_modifier = {
@@ -498,8 +524,14 @@ building_communal_housing_large = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			rare_crystals = @b2_rare_cost
 		}
 		upkeep = {
@@ -538,6 +570,14 @@ building_medical_1 = {
 			}
 		}
 		OR = {
+			has_carrier_flag = ignore_ai_building_limitations
+			free_amenities < @amenity_ai_limit
+			OR = {
+				buildings_stop_pop = no
+				owner = { is_ai = no }
+			}
+		}
+		OR = {
 			owner = {
 				NOT = { is_ai = yes }
 			}
@@ -559,7 +599,7 @@ building_medical_1 = {
 			}
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -582,17 +622,15 @@ building_medical_1 = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = @b1_upkeep
-		}
-		upkeep = {
-			trigger = {
-				owner = { has_policy_flag = public_healthcare }
-			}
-			energy = 1
 		}
 	}
 
@@ -803,8 +841,14 @@ building_medical_2 = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			exotic_gases = @b2_rare_cost
 		}
 		upkeep = {
@@ -818,12 +862,6 @@ building_medical_2 = {
 				}
 			}
 			exotic_gases = @b2_rare_upkeep
-		}
-		upkeep = {
-			trigger = {
-				owner = { has_policy_flag = public_healthcare }
-			}
-			energy = 2
 		}
 	}
 
@@ -1066,19 +1104,19 @@ building_medical_3 = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			exotic_gases = @b2_rare_cost
 		}
 		upkeep = {
 			energy = @b2_upkeep
 			exotic_gases = @b2_rare_upkeep
-		}
-		upkeep = {
-			trigger = {
-				owner = { has_policy_flag = public_healthcare }
-			}
-			energy = 3
 		}
 	}
 

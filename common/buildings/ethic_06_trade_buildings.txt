@@ -57,14 +57,18 @@ building_commercial_zone = {
 
 	resources = {
 		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
 		}
 		upkeep = {
 			energy = @b1_upkeep
 		}
 	}
-	
+
 	inline_script = {
 		script = jobs/trader_add
 		AMOUNT = @building_static_jobs
@@ -176,8 +180,14 @@ building_commercial_megaplex = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			rare_crystals = @b2_rare_cost
 		}
 		upkeep = {
@@ -368,8 +378,14 @@ building_galactic_stock_exchange = {
 
 	resources = {
 		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
 		cost = {
-			minerals = @b2_minerals
 			rare_crystals = @b2_rare_cost
 		}
 		upkeep = {
@@ -404,49 +420,6 @@ building_galactic_stock_exchange = {
 			solar_system = {
 				# has_system_trade_value >= 80	# No Longer Used in Stellaris 4.0
 			}
-		}
-	}
-}
-
-building_maintenance_depot = {
-	base_buildtime = 240
-
-	category = trade
-
-	building_sets = {
-		urban
-		trade
-	}
-
-	potential = {
-		owner = { is_gestalt = yes }
-		owner = { is_wilderness_empire = no }
-	}
-
-	destroy_trigger = {
-		exists = owner
-		OR = {
-			owner = { is_gestalt = no }
-			owner = { is_wilderness_empire = yes }
-		}
-	}
-
-	convert_to = {
-		building_commercial_zone
-	}
-
-	inline_script = {
-		script = jobs/trader_add
-		AMOUNT = @building_static_jobs
-	}
-
-	resources = {
-		category = planet_buildings
-		cost = {
-			minerals = @b1_minerals
-		}
-		upkeep = {
-			energy = 2
 		}
 	}
 }
